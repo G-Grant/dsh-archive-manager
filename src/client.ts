@@ -642,7 +642,7 @@ window.__ModuleLoader__.load({
         mount,
         new Promise((_, reject) => {
           const timer = window.setTimeout(() => reject(new Error('cleanup service mount timed out after 8s')), 8000);
-          
+
         }),
       ]);
       ctx.effect(() => () => {
