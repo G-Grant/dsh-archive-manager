@@ -44,7 +44,7 @@ function textId(value) {
 
 function issue(reason) {
   const error = new Error(reason);
-  error.archiveManagerReason = reason;
+  (error as Error & { archiveManagerReason: string }).archiveManagerReason = reason;
   return error;
 }
 
@@ -71,7 +71,7 @@ function encodeSegment(raw) {
   return result;
 }
 
-async function readArchivedIds(ctx) {
+async function readArchivedIds(ctx): Promise<Set<string>> {
   const controller = serviceOf(ctx, "workspaceController");
   if (typeof controller?.follow !== "function") {
     throw new RemoteError("archive-manager/unavailable", "Archived-session state is unavailable in this deployment.", { reason: "workspace-follow-unavailable" });

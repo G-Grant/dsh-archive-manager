@@ -5,13 +5,20 @@
   "license": "MIT",
   "author": "G-Grant",
   "type": "module",
-  "main": "./index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./index.js",
-    "./client": "./client.js",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js"
+    },
     "./icon": "./icon.svg"
   },
-  "files": ["index.js", "client.js", "cordis.patch.yml", "icon.svg", "README.md", "LICENSE"],
+  "files": ["dist", "cordis.patch.yml", "icon.svg", "README.md", "LICENSE"],
   "icon": "./icon.svg",
   "dsh": {
     "bundle": { "patch": "./cordis.patch.yml" },
@@ -36,5 +43,17 @@
     "@deepseek-ai/dsh-typert-protocol": ">=0.2.1-rc.2"
   },
   "engines": { "node": ">=22", "dsh": ">=0.2.1-rc.2" },
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "pnpm clean && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check": "pnpm typecheck && pnpm build && node --check dist/index.js && node --check dist/client.js",
+    "prepack": "pnpm build",
+    "pack:verify": "pnpm pack --pack-destination .artifacts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3"
+  },
   "packageManager": "pnpm@11.8.0"
 }

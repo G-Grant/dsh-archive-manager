@@ -306,7 +306,7 @@ window.__ModuleLoader__.load({
       const code = typeof error?.code === 'string' && error.code.length > 0 ? error.code : 'remote-error';
       const detail = typeof error?.message === 'string' && error.message.length > 0 ? error.message : 'unknown error';
       const failure = new Error(`${operation} failed: ${code}: ${detail}`);
-      failure.code = code;
+      (failure as Error & { code: string }).code = code;
       return failure;
     }
 
@@ -642,7 +642,7 @@ window.__ModuleLoader__.load({
         mount,
         new Promise((_, reject) => {
           const timer = window.setTimeout(() => reject(new Error('cleanup service mount timed out after 8s')), 8000);
-          if (typeof timer?.unref === 'function') timer.unref();
+          
         }),
       ]);
       ctx.effect(() => () => {
