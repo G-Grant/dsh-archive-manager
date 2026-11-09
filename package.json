@@ -1,6 +1,6 @@
 {
   "name": "dsh-archive-manager",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "DeepSeek Harness 插件：查看、取消归档并批量永久删除归档会话。",
   "license": "MIT",
   "author": "G-Grant",

@@ -84,10 +84,10 @@ jobs:
           pnpm pack --pack-destination "$RUNNER_TEMP/pack"
           packed="$(find "$RUNNER_TEMP/pack" -name '*.tgz' -print -quit)"
           test -n "$packed"
-          tar -tzf "$packed" | grep -qx 'package/dist/index.js'
-          tar -tzf "$packed" | grep -qx 'package/dist/client.js'
-          tar -tzf "$packed" | grep -qx 'package/cordis.patch.yml'
-          tar -tzf "$packed" | grep -qx 'package/icon.svg'
+          tar -tzf "$packed" > "$RUNNER_TEMP/entries.txt"
+          for entry in package/dist/index.js package/dist/client.js package/cordis.patch.yml package/icon.svg; do
+            grep -qx "$entry" "$RUNNER_TEMP/entries.txt" || { echo "missing $entry"; exit 1; }
+          done
           cp "$packed" "$RUNNER_TEMP/dsh-archive-manager.tgz"
           echo "path=$RUNNER_TEMP/dsh-archive-manager.tgz" >> "$GITHUB_OUTPUT"
 
